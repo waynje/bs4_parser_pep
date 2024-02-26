@@ -87,15 +87,14 @@ def pep(session):
                 pep_link, pep_status, EXPECTED_STATUS[preview_status])
 
     for item in pep_count.items():
-        results.append(item)
-    results.append(('Total', len(all_peps[1:])))
+        results.extend(item)
+    results.extend(('Total', len(all_peps[1:])))
 
     return results
 
 
 def latest_versions(session):
 
-    session = requests_cache.CachedSession()
     response = get_response(session, MAIN_DOC_URL)
 
     if response is None:
@@ -133,7 +132,6 @@ def latest_versions(session):
 def download(session):
 
     downloads_url = urljoin(MAIN_DOC_URL, 'download.html')
-    session = requests_cache.CachedSession()
     response = get_response(session, downloads_url)
 
     if response is None:
@@ -146,7 +144,6 @@ def download(session):
                           attrs={'href': re.compile(r'.+pdf-a4\.zip$')})
     pdf_a4_link = pdf_a4_tag['href']
     archive_url = urljoin(downloads_url, pdf_a4_link)
-    print(archive_url)
     filename = archive_url.split('/')[-1]
     downloads_dir = BASE_DIR / 'downloads'
     downloads_dir.mkdir(exist_ok=True)
