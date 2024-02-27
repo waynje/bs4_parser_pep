@@ -15,7 +15,6 @@ from utils import get_response, find_tag, unexpected_status
 def whats_new(session):
 
     whats_new_url = urljoin(MAIN_DOC_URL, 'whatsnew/')
-    session = requests_cache.CachedSession()
     response = get_response(session, whats_new_url)
 
     if response is None:
@@ -86,8 +85,7 @@ def pep(session):
             unexpected_status(
                 pep_link, pep_status, EXPECTED_STATUS[preview_status])
 
-    for item in pep_count.items():
-        results.extend(item)
+    results.extend(pep_count.items())
     results.extend(('Total', len(all_peps[1:])))
 
     return results
